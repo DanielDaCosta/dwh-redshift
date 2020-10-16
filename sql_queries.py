@@ -7,18 +7,18 @@ config.read('dwh.cfg')
 
 # DROP TABLES
 
-staging_events_table_drop = ""
-staging_songs_table_drop = ""
-songplay_table_drop = ""
-user_table_drop = ""
-song_table_drop = ""
-artist_table_drop = ""
-time_table_drop = ""
+staging_events_table_drop = "DROP TABLE IF EXISTS staging_events"
+staging_songs_table_drop = "DROP TABLE IF EXISTS staging_songs"
+songplay_table_drop = "DROP TABLE IF EXISTS songplays"
+user_table_drop = "DROP TABLE IF EXISTS users"
+song_table_drop = "DROP TABLE IF EXISTS songs"
+artist_table_drop = "DROP TABLE IF EXISTS artists"
+time_table_drop = "DROP TABLE IF EXISTS time"
 
 # CREATE TABLES
 
 staging_events_table_create= ("""
-    CREATE TABLE IF NOT EXISTS statiging_events (
+    CREATE TABLE IF NOT EXISTS staging_events (
         event_id int identity(0, 1),
         artist_name varchar(100),
         auth varchar(50),
@@ -122,10 +122,18 @@ time_table_create = ("""
 # STAGING TABLES
 
 staging_events_copy = ("""
-""").format()
+    copy staging_events
+    from {}
+    iam_role {}
+    json {};
+""").format(config.get('S3','LOG_DATA'), config.get('IAM_ROLE', 'ARN'), config.get('S3','LOG_JSONPATH'))
 
 staging_songs_copy = ("""
-""").format()
+    copy staging_songs
+    from {}
+    iam_role {}
+    json 'auto';
+""").format(config.get('S3','SONG_DATA'), config.get('IAM_ROLE', 'ARN'))
 
 # FINAL TABLES
 
