@@ -18,24 +18,105 @@ time_table_drop = ""
 # CREATE TABLES
 
 staging_events_table_create= ("""
+    CREATE TABLE IF NOT EXISTS statiging_events (
+        event_id int identity(0, 1),
+        artist_name varchar(100),
+        auth varchar(50),
+        user_first_name varchar(50),
+        user_gender varchar(1),
+        item_ion_session integer,
+        user_last_name varchar(50),
+        song_length double precision,
+        user_level varchar(5),
+        location varchar(80),
+        method varchar(25),
+        page varchar(35),
+        registration varchar(50),
+        session_id integer,
+        song_title varchar(100),
+        status integer,
+        ts varchar(50),
+        user_agent text,
+        user_id varchar(18),
+        PRIMARY KEY (event_id)
+    );
 """)
 
 staging_songs_table_create = ("""
+    CREATE TABLE IF NOT EXISTS staging_songs (
+        song_id varchar(18),
+        num_songs integer, 
+        artist_id varchar(18),
+        artist_latitude double precision,
+        artist_longitude double precision,
+        artist_location varchar(80),
+        artist_name varchar(100),
+        title varchar(100),
+        duration numeric(9,5),
+        year smallint,
+        PRIMARY KEY (song_id)
+    );
 """)
 
 songplay_table_create = ("""
+    create table if not exists songplays(
+        songplay_id int identity(0, 1),
+        start_time timestamptz references time(start_time) sortkey,
+        user_id varchar(18) references users(user_id),
+        level varchar(5) default 'free',
+        song_id varchar(18) references songs(song_id),
+        artist_id varchar(18) references artists(artist_id),
+        session_id integer,
+        location varchar(80),
+        user_agent text,
+        PRIMARY KEY (songplay_id)
+    );  
 """)
 
 user_table_create = ("""
+    create table if not exists users(
+        user_id varchar(18) primary key,
+        first_name varchar(50) not null,
+        last_name varchar(50) not null,
+        gender varchar(1) not null,
+        level varchar(5) default 'free'
+    )
+    diststyle all;
 """)
 
 song_table_create = ("""
+    create table if not exists songs(
+        song_id varchar(18) primary key,
+        title varchar(100) NOT NULL,
+        artist_id varchar(18) NOT NULL,
+        year smallint,
+        duration numeric(9,5) NOT NULL
+    )
+    diststyle all;
 """)
 
 artist_table_create = ("""
+    create table if not exists artists(
+        artist_id varchar(18) primary key,
+        name varchar(100) NOT NULL,
+        location varchar(80) NOT NULL,
+        latitude float8,
+        longitude float8
+    )
+    diststyle all;
 """)
 
 time_table_create = ("""
+    create table if not exists time(
+        start_time timestamptz primary key sortkey,
+        hour smallint not null,
+        day smallint not null,
+        week smallint not null,
+        month smallint not null,
+        year smallint not null,
+        weekday smallint not null
+    )
+    distyle all;
 """)
 
 # STAGING TABLES
