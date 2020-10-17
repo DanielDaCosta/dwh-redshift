@@ -19,3 +19,11 @@ Creates Redshift cluster and add Ingress rule for TCP connection on port 5439. R
 
 ## S3
 Upload all dataset to s3. Run `load_s3.py`
+
+# Schemas
+
+## Data in S3
+This data will pass trough an ETL to be stored in Redshift
+![Image](Images/stage_schema.png)
+## Datawarehouse Schema
+![Image](Images/star_schema.png)
