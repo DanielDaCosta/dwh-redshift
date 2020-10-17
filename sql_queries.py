@@ -20,11 +20,11 @@ time_table_drop = "DROP TABLE IF EXISTS time"
 staging_events_table_create= ("""
     CREATE TABLE IF NOT EXISTS staging_events (
         event_id int identity(0, 1),
-        artist_name varchar(100),
+        artist_name varchar(255),
         auth varchar(50),
         user_first_name varchar(50),
         user_gender varchar(1),
-        item_ion_session integer,
+        item_in_session integer,
         user_last_name varchar(50),
         song_length double precision,
         user_level varchar(5),
@@ -33,7 +33,7 @@ staging_events_table_create= ("""
         page varchar(35),
         registration varchar(50),
         session_id integer,
-        song_title varchar(100),
+        song_title varchar(255),
         status integer,
         ts varchar(50),
         user_agent text,
@@ -87,7 +87,7 @@ user_table_create = ("""
 song_table_create = ("""
     create table if not exists songs(
         song_id varchar(18) primary key,
-        title varchar(100) NOT NULL,
+        title varchar(255) NOT NULL,
         artist_id varchar(18) NOT NULL,
         year smallint,
         duration numeric(9,5) NOT NULL
@@ -116,7 +116,7 @@ time_table_create = ("""
         year smallint not null,
         weekday smallint not null
     )
-    distyle all;
+    diststyle all;
 """)
 
 # STAGING TABLES
@@ -154,7 +154,7 @@ time_table_insert = ("""
 
 # QUERY LISTS
 
-create_table_queries = [staging_events_table_create, staging_songs_table_create, songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
+create_table_queries = [staging_events_table_create, staging_songs_table_create, time_table_create, artist_table_create, song_table_create, user_table_create, songplay_table_create]
 drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
-copy_table_queries = [staging_events_copy, staging_songs_copy]
+copy_table_queries = [staging_songs_copy, staging_events_copy]
 insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
