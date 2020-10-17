@@ -1,6 +1,8 @@
 import configparser
 import psycopg2
-from sql_queries import copy_table_queries, insert_table_queries
+from sql_queries import copy_table_queries,\
+    insert_table_queries, \
+    truncate_table_queries
 
 
 def load_staging_tables(cur, conn):
@@ -15,6 +17,11 @@ def insert_tables(cur, conn):
         cur.execute(query)
         conn.commit()
 
+def truncate_tables(cur, conn):
+    for query in truncate_table_queries:
+        cur.execute(query)
+        conn.commit()
+
 
 def main():
     config = configparser.ConfigParser()
@@ -24,7 +31,8 @@ def main():
     cur = conn.cursor()
     
     load_staging_tables(cur, conn)
-    # insert_tables(cur, conn)
+    # truncate_tables(cur, conn)
+    insert_tables(cur, conn)
 
     conn.close()
 

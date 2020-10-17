@@ -4,7 +4,7 @@ import logging
 import json
 import configparser
 config = configparser.ConfigParser()
-config.read('dwh.cfg')
+config.read('../dwh.cfg')
 
 DWH_IAM_ROLE_NAME = config.get("DWH", "DWH_IAM_ROLE_NAME")
 

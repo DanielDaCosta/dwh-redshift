@@ -15,6 +15,15 @@ song_table_drop = "DROP TABLE IF EXISTS songs"
 artist_table_drop = "DROP TABLE IF EXISTS artists"
 time_table_drop = "DROP TABLE IF EXISTS time"
 
+# TRUNCATE TABLES
+staging_events_table_truncate = "TRUNCATE staging_events"
+staging_songs_table_truncate = "TRUNCATE staging_songs"
+songplay_table_truncate = "TRUNCATE songplays"
+user_table_truncate = "TRUNCATE users"
+song_table_truncate = "TRUNCATE songs"
+artist_table_truncate = "TRUNCATE artists"
+time_table_truncate = "TRUNCATE time"
+
 # CREATE TABLES
 
 staging_events_table_create= ("""
@@ -76,9 +85,9 @@ songplay_table_create = ("""
 user_table_create = ("""
     create table if not exists users(
         user_id varchar(18) primary key,
-        first_name varchar(50) not null,
-        last_name varchar(50) not null,
-        gender varchar(1) not null,
+        first_name varchar(50),
+        last_name varchar(50),
+        gender varchar(1),
         level varchar(5) default 'free'
     )
     diststyle all;
@@ -138,18 +147,59 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
+    INSERT INTO songplays(start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+     select timestamp 'epoch' + ts::INT8/1000 * INTERVAL '1 second' as start_time, 
+           user_id, 
+           user_level as level, 
+           songs.song_id, 
+           artists.artist_id,
+		   session_id, 
+           staging_events.location,
+           user_agent
+    from staging_events 
+    inner join artists on artists.name = staging_events.artist_name
+    inner join songs on songs.title = staging_events.song_title
+    where page='NextSong';
 """)
 
+# Get distinct user_id. Get user last inserted infos
 user_table_insert = ("""
+    insert into users(user_id, first_name, last_name, gender, level)
+    select distinct (user_id) user_id, user_first_name, user_last_name, user_gender, user_level
+    from staging_events
+    order by user_id, ts desc;
 """)
+
 
 song_table_insert = ("""
+    insert into songs(song_id, title, artist_id, year, duration)
+    select song_id, title, artist_id, year, duration
+    from staging_songs;
 """)
 
 artist_table_insert = ("""
+    insert into artists(artist_id, name, location, latitude, longitude)
+    select artist_id, artist_name, artist_location, artist_latitude, artist_longitude
+    from staging_songs;
 """)
 
 time_table_insert = ("""
+    INSERT INTO time(start_time, hour, day, week, month, year, weekday)
+    WITH time_parse AS
+    (
+        SELECT
+            DISTINCT TIMESTAMP 'epoch' + ts::INT8/1000 * INTERVAL '1 second' AS start_time
+        FROM staging_events
+    )
+    SELECT
+        start_time AS start_time,
+        EXTRACT (hour from start_time) AS hour,
+        EXTRACT (day from start_time) AS day,
+        EXTRACT (week from start_time) AS week,
+        EXTRACT (month from start_time) AS month,
+        EXTRACT (year from start_time) AS year,
+        EXTRACT (dow from start_time) AS weekday
+    FROM time_parse;
 """)
 
 # QUERY LISTS
@@ -157,4 +207,5 @@ time_table_insert = ("""
 create_table_queries = [staging_events_table_create, staging_songs_table_create, time_table_create, artist_table_create, song_table_create, user_table_create, songplay_table_create]
 drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
 copy_table_queries = [staging_songs_copy, staging_events_copy]
-insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
+insert_table_queries = [user_table_insert, song_table_insert, artist_table_insert, time_table_insert, songplay_table_insert]
+truncate_table_queries = [songplay_table_truncate, user_table_truncate, song_table_truncate, artist_table_truncate, time_table_truncate]
