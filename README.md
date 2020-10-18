@@ -45,7 +45,7 @@ Fill out the `dwh.cfg` with the desired redshift confirguration, s3 and IAM role
 ## Scripts
 Once you have all the infrastructure ready:
 
-- Run `create_tables.py``
+- Run `create_tables.py`
 - Run `etl.py`
 
 # References
