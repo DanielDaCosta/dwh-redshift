@@ -1,4 +1,4 @@
-# dwh-redshift
+# Datawarehouse Redshift
 ETL pipeline for a DWH hosted on Redshift
 
 # Files
