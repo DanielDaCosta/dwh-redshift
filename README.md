@@ -12,7 +12,7 @@ ETL pipeline for a datawarehouse (DWH) hosted on Redshift AWS
 
 # AWS Credentials
 We are using aws as environment variables in this repo:
-```
+```bash
 export AWS_ACCESS_KEY_ID=<YOUR_AWS_ACCESS_KEY_ID>
 export AWS_SECRET_ACCESS_KEY=<YOUR_AWS_SECRET_ACCESS_KEY>
 export AWS_DEFAULT_REGION=<YOUR_REGION>
