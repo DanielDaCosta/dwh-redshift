@@ -4,11 +4,11 @@ ETL pipeline for a datawarehouse (DWH) hosted on Redshift AWS
 # Files
 
 - AWS/ used to create aws infrastucture read more on section *Creating Infrastucture*
-- sql_queries.py: contains all sql queries
-- create_tables.py: Create all tables. Read more on details about the tables schema on section *Schemas*
-- etl.py: Run ETL pipeline. The pipeline read data from s3 (schema format on subsection *Data in s3*), and converts the data to a Star Schema format (schema format on subsection *schema format on subsection *Datawarehouse Schema*)
-- load_s3.py: Upload `*.json` data on folder `data/`to s3.
-- dwg.cfg: Config file
+- *sql_queries.py*: contains all sql queries
+- *create_tables.py*: Create all tables. Read more on details about the tables schema on section *Schemas*
+- *etl.py*: Run ETL pipeline. The pipeline read data from s3 (schema format on subsection *Data in s3*), and converts the data to a Star Schema format (schema format on subsection *schema format on subsection *Datawarehouse Schema*)
+- *load_s3.py*: Upload `*.json` data on folder `data/`to s3.
+- *dwg.cfg*: Config file
 
 # AWS Credentials
 We are using aws as environment variables in this repo:
