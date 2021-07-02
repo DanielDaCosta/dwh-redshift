@@ -43,10 +43,10 @@ This data will pass trough an ETL to be stored in Redshift
 Fill out the `dwh.cfg` with the desired redshift confirguration, s3 and IAM role
 
 ## Scripts
-Once you have all the infraestructure ready:
+Once you have all the infraestructure ready. Run the commands:
 
-- Run `create_tables.py`
-- Run `etl.py`
+- Run `python create_tables.py`
+- Run `python etl.py`
 
 # References
 
