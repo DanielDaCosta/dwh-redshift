@@ -1,5 +1,5 @@
 # Datawarehouse Redshift
-ETL pipeline for a datawarehouse (DWH) hosted on Redshift AWS
+ETL pipeline for a datawarehouse (DWH) hosted on *Redshift AWS*
 
 # Files
 
