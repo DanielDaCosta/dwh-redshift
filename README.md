@@ -26,7 +26,7 @@ Create IAM roles for Redshift, run file: `iam.py`. It will create a role for Red
 ## Redshift
 Creates Redshift cluster and add Ingress rule for TCP connection on port 5439. Run file `redshift.py`
 
-## S3
+## s3
 Upload all dataset to s3. Run `load_s3.py`
 
 # Schemas
